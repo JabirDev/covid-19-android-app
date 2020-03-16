@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">COVID-19</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_cases">Cases</string>
+    <string name="tv_deaths">Deaths</string>
+    <string name="tv_recovered">Recovered</string>
+    <string name="open_source_license">Open Source License</string>
+    <string name="about">This is a simple application to find out information about COVID-19. \n\n
+        This application retrieves data from the API https://github.com/javieraviles/covidAPI \n\n
+        You can also see the source code of this application at https://github.com/JabirDev/covid-19-android-app\n\n
+        \u00A9 Jabir Developer</string>
+</resources>
