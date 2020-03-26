@@ -2,9 +2,13 @@ package com.jabirdeveloper.covid_19.activiies;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
@@ -25,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
         TabLayout tabLayout = findViewById(R.id.main_tablayout);
         ViewPager viewPager = findViewById(R.id.main_viewpager);
@@ -39,4 +41,5 @@ public class MainActivity extends AppCompatActivity {
         tabAdapter.notifyDataSetChanged();
 
     }
+
 }

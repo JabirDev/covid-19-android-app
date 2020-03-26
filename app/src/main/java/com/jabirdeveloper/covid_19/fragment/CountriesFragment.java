@@ -1,11 +1,12 @@
 package com.jabirdeveloper.covid_19.fragment;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,21 +17,22 @@ import retrofit2.Response;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.jabirdeveloper.covid_19.R;
-import com.jabirdeveloper.covid_19.adapter.CountryAdapater;
+import com.jabirdeveloper.covid_19.activiies.MainActivity;
+import com.jabirdeveloper.covid_19.adapter.CountryAdapter;
 import com.jabirdeveloper.covid_19.model.CountriesCase;
 import com.jabirdeveloper.covid_19.network.Koneksi;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,14 +41,19 @@ public class CountriesFragment extends Fragment {
 
     private static final String TAG = CountriesFragment.class.getSimpleName();
     private List<CountriesCase> items = new ArrayList<>();
-    private CountryAdapater adapater;
-    private LinearLayoutManager manager;
+    private CountryAdapter adapater;
     private SwipeRefreshLayout refreshLayout;
+    private RecyclerView rv;
 
     public CountriesFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,26 +65,25 @@ public class CountriesFragment extends Fragment {
     }
 
     private void init(View view) {
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
         refreshLayout = view.findViewById(R.id.refresh_layout);
-        RecyclerView rv = view.findViewById(R.id.recycler_view);
-
         refreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
-        adapater = new CountryAdapater(getContext(), items);
-        manager = new LinearLayoutManager(getContext());
-        rv.setAdapter(adapater);
-        rv.setLayoutManager(manager);
+        rv = view.findViewById(R.id.recycler_view);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 items.clear();
+                setupRecyclerView();
                 adapater.notifyDataSetChanged();
                 getData();
             }
         });
 
         getData();
+
     }
 
     private void getData() {
@@ -87,8 +93,9 @@ public class CountriesFragment extends Fragment {
             @Override
             public void onResponse(Call<List<CountriesCase>> call, Response<List<CountriesCase>> response) {
                 List<CountriesCase> cc = response.body();
-                if (cc != null){
+                if (cc != null) {
                     items.addAll(cc);
+                    setupRecyclerView();
                     adapater.notifyDataSetChanged();
                 }
                 refreshLayout.setRefreshing(false);
@@ -103,4 +110,30 @@ public class CountriesFragment extends Fragment {
         });
     }
 
+    private void setupRecyclerView() {
+        adapater = new CountryAdapter(getContext(), items);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        rv.setAdapter(adapater);
+        rv.setLayoutManager(manager);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapater.getFilter().filter(newText);
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }

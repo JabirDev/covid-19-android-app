@@ -23,6 +23,7 @@ import com.jabirdeveloper.covid_19.R;
 import com.jabirdeveloper.covid_19.model.GlobalCase;
 import com.jabirdeveloper.covid_19.network.Koneksi;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -32,7 +33,7 @@ import java.util.Locale;
 public class GlobalFragment extends Fragment {
 
     private static final String TAG = GlobalFragment.class.getSimpleName();
-    private TextView tvCases, tvDeaths, tvRecovered;
+    private TextView tvCases, tvDeaths, tvRecovered, tvDeathsPercentage, tvRecoveredPercentage;
     private SharedPreferences dataGlobal;
     private ValueAnimator animCases = new ValueAnimator();
     private ValueAnimator animDetahs = new ValueAnimator();
@@ -62,6 +63,8 @@ public class GlobalFragment extends Fragment {
         tvCases = view.findViewById(R.id.tv_cases);
         tvDeaths = view.findViewById(R.id.tv_deaths);
         tvRecovered = view.findViewById(R.id.tv_recovered);
+        tvDeathsPercentage = view.findViewById(R.id.tv_deaths_percentage);
+        tvRecoveredPercentage = view.findViewById(R.id.tv_recovered_percentage);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -89,6 +92,14 @@ public class GlobalFragment extends Fragment {
                     editor.putInt("deaths", deaths);
                     editor.putInt("recovered", recovered);
                     editor.apply();
+
+                    float deathPercent = (deaths * 100.0f) / cases;
+                    float recoveredPercent = (recovered * 100.0f) / cases;
+                    String deathP = round(deathPercent, 1) + "%";
+                    String recoveredP = round(recoveredPercent, 1)+ "%";
+
+                    tvDeathsPercentage.setText(deathP);
+                    tvRecoveredPercentage.setText(recoveredP);
 
                     animCases.setObjectValues(0, cases);
                     animCases.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -161,6 +172,12 @@ public class GlobalFragment extends Fragment {
                 animRecovered.start();
             }
         });
+    }
+
+    private String round(double value, int digit){
+        BigDecimal bigDecimal = new BigDecimal(value);
+        bigDecimal = bigDecimal.setScale(digit, BigDecimal.ROUND_HALF_UP);
+        return bigDecimal.toString();
     }
 
 }

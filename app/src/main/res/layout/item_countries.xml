@@ -24,23 +24,55 @@
         android:layout_marginBottom="8dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
-    <TextView
-        android:id="@+id/tv_deaths"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_recovered"
+        <TextView
+            android:id="@+id/tv_deaths"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+        <TextView
+            android:id="@+id/tv_deaths_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorRed"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_recovered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+        <TextView
+            android:id="@+id/tv_recovered_percentage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorGreen"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/divider"
