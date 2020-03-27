@@ -142,6 +142,15 @@ public class GlobalFragment extends Fragment {
                 int cases = dataGlobal.getInt("cases",0);
                 int deaths = dataGlobal.getInt("deaths",0);
                 int recovered = dataGlobal.getInt("recovered",0);
+
+                float deathPercent = (deaths * 100.0f) / cases;
+                float recoveredPercent = (recovered * 100.0f) / cases;
+                String deathP = round(deathPercent, 1) + "%";
+                String recoveredP = round(recoveredPercent, 1)+ "%";
+
+                tvDeathsPercentage.setText(deathP);
+                tvRecoveredPercentage.setText(recoveredP);
+
                 animCases.setObjectValues(0, cases);
                 animCases.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
